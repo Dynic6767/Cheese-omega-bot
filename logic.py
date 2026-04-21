@@ -7,16 +7,16 @@ def create_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tastes (
             taste_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            taste_name TEXT NOT NULL UNIQUE
+            taste_name TEXT 
         )
     ''')
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS cheeses (
             cheese_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            cheese_name TEXT NOT NULL,
+            cheese_name TEXT,
             taste_id INTEGER,
-            price REAL NOT NULL,
+            price INTEGER,
             FOREIGN KEY (taste_id) REFERENCES tastes(taste_id)
         )
     ''')
@@ -25,7 +25,7 @@ def create_database():
         CREATE TABLE IF NOT EXISTS cheese_pairings (
             pairing_id INTEGER PRIMARY KEY AUTOINCREMENT,
             cheese_id INTEGER,
-            paired_with TEXT NOT NULL,
+            paired_with TEXT,
             description TEXT,
             FOREIGN KEY (cheese_id) REFERENCES cheeses(cheese_id)
         )
@@ -106,10 +106,10 @@ def get_cheapest_by_taste():
     conn = sqlite3.connect('cheese_catalog.db')
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT t.taste_name, c.cheese_name, MIN(c.price)
-        FROM cheeses c
-        JOIN tastes t ON c.taste_id = t.taste_id
-        GROUP BY t.taste_name
+        SELECT taste_name, cheese_name, MIN(price)
+        FROM cheeses 
+        JOIN tastes ON taste_id = taste_id
+        GROUP BY taste_name
     ''')
     result = cursor.fetchall()
     conn.close()
@@ -119,10 +119,10 @@ def get_most_expensive_by_taste():
     conn = sqlite3.connect('cheese_catalog.db')
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT t.taste_name, c.cheese_name, MAX(c.price)
-        FROM cheeses c
-        JOIN tastes t ON c.taste_id = t.taste_id
-        GROUP BY t.taste_name
+        SELECT taste_name, cheese_name, MAX(price)
+        FROM cheeses 
+        JOIN tastes ON taste_id = taste_id
+        GROUP BY taste_name
     ''')
     result = cursor.fetchall()
     conn.close()

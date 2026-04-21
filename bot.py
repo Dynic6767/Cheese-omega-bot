@@ -74,7 +74,7 @@ def get_pairings(message):
     pairings = get_cheese_pairings()
 
     if pairings:
-        response = "Сочетания сыров с другими продуктами:\n\n"
+        response = "Сочетания сыров:\n\n"
         current_cheese = None
         for cheese, paired_with, description in pairings:
             if cheese != current_cheese:
