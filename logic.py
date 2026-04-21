@@ -89,6 +89,19 @@ def populate_data():
     conn.commit()
     conn.close()
 
+def cheese_info():
+    conn = sqlite3.connect('cheese_catalog.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT c.cheese_name, t.taste_name, c.price
+        FROM cheeses c
+        JOIN tastes t ON c.taste_id = t.taste_id
+        ORDER BY c.cheese_name
+    ''')
+    result = cursor.fetchall()
+    conn.close()
+    return result
+
 def get_cheapest_by_taste():
     conn = sqlite3.connect('cheese_catalog.db')
     cursor = conn.cursor()
